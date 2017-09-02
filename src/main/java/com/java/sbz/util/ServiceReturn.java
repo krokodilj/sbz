@@ -7,12 +7,19 @@ public class ServiceReturn {
 
     private boolean ok;
     private String message;
+    private Object data;
 
     public ServiceReturn(){}
 
     public ServiceReturn(boolean ok,String message){
         this.ok=ok;
         this.message=message;
+    }
+
+    public ServiceReturn(boolean ok,String message,Object data){
+        this.ok=ok;
+        this.message=message;
+        this.data=data;
     }
 
     public boolean isOk() {
@@ -29,5 +36,13 @@ public class ServiceReturn {
 
     public void setMessage(String message) {
         this.message = message;
+    }
+
+    public Object getData() {
+        return data;
+    }
+
+    public void setData(Object data) {
+        this.data = data;
     }
 }

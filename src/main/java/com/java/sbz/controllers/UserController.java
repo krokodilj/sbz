@@ -6,10 +6,7 @@ import com.java.sbz.util.ServiceReturn;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 
 /**
@@ -24,7 +21,7 @@ public class UserController {
     UserService userService;
 
     @RequestMapping(
-            value = "/",
+            value = "",
             method = RequestMethod.POST,
             consumes="application/json"
             )
@@ -38,6 +35,24 @@ public class UserController {
         }
 
         return new ResponseEntity(HttpStatus.OK);
+    }
+
+    @RequestMapping(
+            value="/{username}",
+            method = RequestMethod.GET,
+            produces = "application/json"
+    )
+    public ResponseEntity getUser(@PathVariable String username){
+        ServiceReturn ret;
+        ret=userService.getUser(username);
+
+        if(!ret.isOk()) {
+            if(ret.getMessage().equals("server error"))
+                return new ResponseEntity(ret.getMessage(),HttpStatus.INTERNAL_SERVER_ERROR);
+            if(ret.getMessage().equals("user not found"))
+                return new ResponseEntity(ret.getMessage(),HttpStatus.NOT_FOUND);
+        }
+        return new ResponseEntity(ret.getData(),HttpStatus.OK);
     }
 
 

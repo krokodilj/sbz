@@ -43,11 +43,28 @@ public class UserService {
 
             userRepository.save(user);
 
+            return new ServiceReturn(true,null);
+
         }catch(Exception e){
             e.printStackTrace();
             return new ServiceReturn(false,"server error");
         }
-        return new ServiceReturn(true,null);
+
+    }
+
+    public ServiceReturn getUser(String username){
+        try{
+            User user = userRepository.findOneByUsername(username);
+
+            if(user==null) return new ServiceReturn(false,"user not found");
+
+            return new ServiceReturn(true,null,user);
+        }catch(Exception e){
+            e.printStackTrace();
+            return new ServiceReturn(false,"server error");
+        }
+
+
     }
 
 
