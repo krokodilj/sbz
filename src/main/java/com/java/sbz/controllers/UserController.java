@@ -55,5 +55,26 @@ public class UserController {
         return new ResponseEntity(ret.getData(),HttpStatus.OK);
     }
 
+    @RequestMapping(
+            value="/login",
+            method = RequestMethod.POST,
+            consumes = "application/json",
+            produces = "application/json"
+    )
+    public ResponseEntity login(@RequestBody addUserDTO data){
+        ServiceReturn ret;
+        ret=userService.login(data);
+        if(!ret.isOk()){
+            if(ret.getMessage().equals("server error"))
+                return new ResponseEntity(ret.getMessage(),HttpStatus.INTERNAL_SERVER_ERROR);
+            if(ret.getMessage().equals("username doesn't exists"))
+                return new ResponseEntity(ret.getMessage(),HttpStatus.NOT_FOUND);
+            if(ret.getMessage().equals("password doesn't match"))
+                return new ResponseEntity(ret.getMessage(),HttpStatus.UNAUTHORIZED);
+        }
+
+        return new ResponseEntity(ret.getData(),HttpStatus.OK);
+    }
+
 
 }

@@ -10,6 +10,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Created by sirko on 9/2/17.
@@ -65,6 +67,25 @@ public class UserService {
         }
 
 
+    }
+
+    public ServiceReturn login(addUserDTO data){
+        try{
+            User user=userRepository.findOneByUsername(data.getUsername());
+
+            if(user==null) return new ServiceReturn(false,"username doesn't exists");
+
+            if(!user.getPassword().equals(data.getPassword())) return new ServiceReturn(false,"password doesn't match");
+
+            Map<String,String> token =new HashMap<String,String>();
+            token.put("username",user.getUsername());
+            token.put("role",user.getRole());
+
+            return new ServiceReturn(true,null,token);
+        }catch(Exception e){
+            e.printStackTrace();
+            return new ServiceReturn(false,"server error");
+        }
     }
 
 
