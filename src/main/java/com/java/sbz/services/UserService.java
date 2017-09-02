@@ -88,5 +88,18 @@ public class UserService {
         }
     }
 
+    public ServiceReturn checkUsername(String username){
+        try{
+            User user=userRepository.findOneByUsername(username);
+
+            if(user!=null) return new ServiceReturn(false,"username not available");
+
+            return new ServiceReturn(true,null);
+        }catch(Exception e){
+            e.printStackTrace();
+            return new ServiceReturn(false,"server error");
+        }
+    }
+
 
 }

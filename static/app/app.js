@@ -1,0 +1,43 @@
+(function(){
+   angular.module('buystuff',['ngRoute','ngCookies'])
+   		.config(function($routeProvider){
+   				$routeProvider
+   					.when("/",{
+
+   					})
+   					.when("/login",{
+   						templateUrl:"app/views/login.html",
+   						controller:"loginController",
+   						controllerAs:"ctrl",
+   						resolve:{
+   							"permission":function(permissionService){
+   								permissionService.givePermission(['guest']);
+   							}
+   						}
+   					})
+   					.when("/register",{
+   						templateUrl:"app/views/register.html",
+   						controller:"registerController",
+   						controllerAs:"ctrl",
+   						resolve:{
+   							"permission":function(permissionService){
+   								permissionService.givePermission(['guest']);
+   							}
+   						}
+   					})
+   					.when("/profile/:username",{
+   						templateUrl:"app/views/profile.html",
+   						controller:"profileController",
+   						controllerAs:"ctrl",
+   						resolve:{
+   							"permission":function(permissionService){
+   								permissionService.givePermission(["customer","manager","salesman"])
+   							}
+   						}
+   					})
+   					.otherwise({
+   						redirectTo:"/"
+   					})
+   			})
+
+})();

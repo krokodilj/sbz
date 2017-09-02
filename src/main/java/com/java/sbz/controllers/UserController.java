@@ -76,5 +76,22 @@ public class UserController {
         return new ResponseEntity(ret.getData(),HttpStatus.OK);
     }
 
+    @RequestMapping(
+            value = "/check/{username}",
+            method = RequestMethod.GET
+    )
+    public ResponseEntity checkUsername(@PathVariable String username){
+        ServiceReturn ret;
+        ret=userService.checkUsername(username);
+        if(!ret.isOk()) {
+            if (ret.getMessage().equals("server error"))
+                return new ResponseEntity(ret.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+            if (ret.getMessage().equals("username not available"))
+                return new ResponseEntity(ret.getMessage(),HttpStatus.UNAVAILABLE_FOR_LEGAL_REASONS);
+        }
+
+        return new ResponseEntity(HttpStatus.OK);
+    }
+
 
 }
