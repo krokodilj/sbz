@@ -42,7 +42,7 @@
 			self.skip=function(){
 				authService.login(self.username,self.password)
 			}
-            /*
+
 			self.upload=function(){
 				userService.uploadImage(self.username,self.file).then(function(retval){
 					if(!retval){ alert("image upload ERROR")}
@@ -61,7 +61,7 @@
 	            reader.readAsDataURL(input.files[0]);
 	            self.file = input.files[0]
         	}
-            */
+
 		});
 
 })();

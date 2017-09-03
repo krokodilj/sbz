@@ -36,7 +36,7 @@
 				return ret
 
 			}
-            /*
+
 			self.uploadImage=function(username,file){
 
 				data= new FormData()
@@ -51,7 +51,7 @@
 					})
 				return ret
 			}
-            */
+
 			self.getUser=function(username){
 				var ret = $http.get('api/users/'+username).then(
 				function(response){

@@ -8,7 +8,12 @@ import com.java.sbz.repository.UserRepository;
 import com.java.sbz.util.ServiceReturn;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -29,7 +34,7 @@ public class UserService {
         try {
             User user = new User(data);
             user.setRegistered(new Date());
-
+            user.setImageSrc("images/guest.png");
             if(user.getRole().equals("customer")){
                 //set him a user profile
                 UserProfile profile=new UserProfile();
@@ -99,5 +104,36 @@ public class UserService {
         }
     }
 
+    public ServiceReturn uploadPicture(MultipartFile file,String username){
+        try{
+            User user=userRepository.findOneByUsername(username);
+
+            if(user==null) return new ServiceReturn(false,"user doesn't exists");
+
+            //////////upload
+            String path="static/images";
+            int read = 0;
+            byte[] bytes = new byte[1024];
+
+            InputStream is=file.getInputStream();
+
+            OutputStream outpuStream = new FileOutputStream(new File(path+File.separator+username+".png"));
+            while ((read = is.read(bytes)) != -1) {
+                outpuStream.write(bytes, 0, read);
+            }
+            is.close();
+            outpuStream.flush();
+            outpuStream.close();
+            ///////////
+
+            user.setImageSrc("images/"+username+".png");
+            userRepository.save(user);
+
+            return new ServiceReturn(true,null);
+        }catch(Exception e){
+            e.printStackTrace();
+            return new ServiceReturn(false,"server error");
+        }
+    }
 
 }

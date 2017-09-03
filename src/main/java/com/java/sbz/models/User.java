@@ -1,5 +1,6 @@
 package com.java.sbz.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.java.sbz.dtos.addUserDTO;
 
 import javax.persistence.*;
@@ -15,10 +16,12 @@ public class User {
     @Id
     @Column(unique = true)
     private String username;
+    @JsonIgnore
     private String password;
     private String firstName;
     private String lastName;
     private String role;
+    private String imageSrc;
     private Date registered;
     @OneToOne(cascade = {CascadeType.ALL})
     private UserProfile userProfile;
@@ -87,6 +90,14 @@ public class User {
 
     public void setUserProfile(UserProfile userProfile) {
         this.userProfile = userProfile;
+    }
+
+    public String getImageSrc() {
+        return imageSrc;
+    }
+
+    public void setImageSrc(String imageSrc) {
+        this.imageSrc = imageSrc;
     }
 
     @Override

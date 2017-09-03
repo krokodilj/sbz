@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 
 /**
@@ -88,6 +89,25 @@ public class UserController {
                 return new ResponseEntity(ret.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
             if (ret.getMessage().equals("username not available"))
                 return new ResponseEntity(ret.getMessage(),HttpStatus.UNAVAILABLE_FOR_LEGAL_REASONS);
+        }
+
+        return new ResponseEntity(HttpStatus.OK);
+    }
+
+    @RequestMapping(
+            value = "/upload",
+            method = RequestMethod.POST,
+            consumes = "multipart/form-data"
+    )
+    public ResponseEntity uploadPicture(@RequestParam MultipartFile file,@RequestParam String username){
+        ServiceReturn ret;
+        ret=userService.uploadPicture(file,username);
+        if(!ret.isOk()) {
+            if (ret.getMessage().equals("server error"))
+                return new ResponseEntity(ret.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+            if (ret.getMessage().equals("user doesn't exists"))
+                return new ResponseEntity(ret.getMessage(), HttpStatus.BAD_REQUEST);
+
         }
 
         return new ResponseEntity(HttpStatus.OK);
