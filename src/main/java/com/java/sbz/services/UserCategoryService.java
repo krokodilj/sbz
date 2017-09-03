@@ -46,9 +46,10 @@ public class UserCategoryService {
 
             if(userCategory==null) return new ServiceReturn(false,"user category doesn't exists");
 
-            //delete old limits
+            //ids for deletion
+            List<Long> ids= new ArrayList<Long>();
             for(SpendingLimit sl:userCategory.getSpendingLimit()){
-                spendingLimitRepository.delete(sl);
+                ids.add(sl.getId());
             }
 
             // add new limits
@@ -61,6 +62,10 @@ public class UserCategoryService {
             userCategory.setSpendingLimit(new_limits);
 
             userCategoryRepository.save(userCategory);
+
+            //delete old limits
+
+            for(Long id:ids) spendingLimitRepository.delete(id);
 
             return new ServiceReturn(true,null);
         }catch(Exception e){
