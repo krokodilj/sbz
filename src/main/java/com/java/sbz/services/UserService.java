@@ -65,8 +65,6 @@ public class UserService {
             e.printStackTrace();
             return new ServiceReturn(false,"server error");
         }
-
-
     }
 
     public ServiceReturn login(addUserDTO data){

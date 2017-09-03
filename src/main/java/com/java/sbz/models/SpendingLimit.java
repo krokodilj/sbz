@@ -1,5 +1,7 @@
 package com.java.sbz.models;
 
+import com.java.sbz.dtos.SpendingLimitDTO;
+
 import javax.persistence.*;
 
 /**
@@ -22,6 +24,12 @@ public class SpendingLimit {
     private Double percent;
 
     public SpendingLimit(){}
+
+    public SpendingLimit(SpendingLimitDTO data){
+        this.upperLimit=data.getUpperLimit();
+        this.lowerLimit=data.getLowerLimit();
+        this.percent=data.getPercent();
+    }
 
     public SpendingLimit(Double upperLimit,Double lowerLimit,Double percent){
         this.upperLimit=upperLimit;

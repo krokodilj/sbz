@@ -31,7 +31,7 @@ public class UserController {
         ret=userService.addUser(data);
 
         if(!ret.isOk()) {
-            return new ResponseEntity( ret.getMessage(),HttpStatus.BAD_REQUEST);
+            return new ResponseEntity( ret.getMessage(),HttpStatus.INTERNAL_SERVER_ERROR);
         }
 
         return new ResponseEntity(HttpStatus.OK);
