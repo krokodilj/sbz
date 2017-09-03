@@ -1,7 +1,9 @@
 package com.java.sbz.util;
 
+import com.java.sbz.models.ArticleCategory;
 import com.java.sbz.models.SpendingLimit;
 import com.java.sbz.models.UserCategory;
+import com.java.sbz.repository.ArticleCategoryRepository;
 import com.java.sbz.repository.UserCategoryRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.ApplicationArguments;
@@ -18,6 +20,9 @@ public class DataLoader implements ApplicationRunner {
 
     @Autowired
     private UserCategoryRepository userCategoryRepository;
+
+    @Autowired
+    private ArticleCategoryRepository articleCategoryRepository;
 
     @Override
     public void run(ApplicationArguments applicationArguments) throws Exception {
@@ -48,5 +53,16 @@ public class DataLoader implements ApplicationRunner {
             userCategoryRepository.save(category);
 
         }
+
+        ArticleCategory broadConsumption = articleCategoryRepository.findOneByName("broad consumption");
+        if(broadConsumption==null){
+            ArticleCategory ac=new ArticleCategory();
+            ac.setId(Long.parseLong("7643753746587"));
+            ac.setName("broad consumption");
+            ac.setMaximumDiscount(0.5);
+            articleCategoryRepository.save(ac);
+
+        }
+
     }
 }

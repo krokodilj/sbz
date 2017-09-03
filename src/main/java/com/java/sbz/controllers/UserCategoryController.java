@@ -16,7 +16,6 @@ import java.util.List;
  */
 
 @RestController
-
 @RequestMapping(value="api/user_category")
 public class UserCategoryController {
 
