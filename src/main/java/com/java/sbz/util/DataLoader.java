@@ -21,15 +21,32 @@ public class DataLoader implements ApplicationRunner {
 
     @Override
     public void run(ApplicationArguments applicationArguments) throws Exception {
-        UserCategory initialCategory = userCategoryRepository.findOneByName("Normal");
+        UserCategory initialCategory = userCategoryRepository.findOneByName("Regular");
         if(initialCategory==null){
             UserCategory category=new UserCategory();
-            category.setName("Normal");
+            category.setName("Regular");
             category.setSpendingLimit(new ArrayList<SpendingLimit>());
             category.getSpendingLimit().add(new SpendingLimit(0.0,100.0,0.01));
             category.getSpendingLimit().add(new SpendingLimit(100.0,1000.0,0.1));
 
             userCategoryRepository.save(category);
+
+            category=new UserCategory();
+            category.setName("Silver");
+            category.setSpendingLimit(new ArrayList<SpendingLimit>());
+            category.getSpendingLimit().add(new SpendingLimit(0.0,100.0,0.01));
+            category.getSpendingLimit().add(new SpendingLimit(100.0,1000.0,0.1));
+
+            userCategoryRepository.save(category);
+
+            category=new UserCategory();
+            category.setName("Gold");
+            category.setSpendingLimit(new ArrayList<SpendingLimit>());
+            category.getSpendingLimit().add(new SpendingLimit(0.0,100.0,0.01));
+            category.getSpendingLimit().add(new SpendingLimit(100.0,1000.0,0.1));
+
+            userCategoryRepository.save(category);
+
         }
     }
 }
