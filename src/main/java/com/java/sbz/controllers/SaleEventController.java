@@ -1,7 +1,8 @@
 package com.java.sbz.controllers;
 
-import com.java.sbz.dtos.addArticleCategoryDTO;
-import com.java.sbz.services.ArticleCategoryService;
+import com.java.sbz.dtos.addSaleEventDTO;
+import com.java.sbz.models.SaleEvent;
+import com.java.sbz.services.SaleEventService;
 import com.java.sbz.util.ServiceReturn;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -9,15 +10,14 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 /**
- * Created by sirko on 9/3/17.
+ * Created by sirko on 9/4/17.
  */
 @RestController
-@RequestMapping(value = "api/article_category")
-public class ArticleCategoryController {
+@RequestMapping(value = "api/sale_event")
+public class SaleEventController {
 
     @Autowired
-    private ArticleCategoryService articleCategoryService;
-
+    private SaleEventService saleEventService;
 
     @RequestMapping(
             value = "",
@@ -26,7 +26,7 @@ public class ArticleCategoryController {
     )
     public ResponseEntity getArticleCategories(){
         ServiceReturn ret;
-        ret=articleCategoryService.getArticleCategories();
+        ret=saleEventService.getSaleEvents();
         if(!ret.isOk()) {
             if (ret.getMessage().equals("server error"))
                 return new ResponseEntity(ret.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
@@ -40,15 +40,15 @@ public class ArticleCategoryController {
             method = RequestMethod.POST,
             consumes = "application/json"
     )
-    public ResponseEntity addArticleCategory(@RequestBody addArticleCategoryDTO data){
+    public ResponseEntity addArticleCategory(@RequestBody addSaleEventDTO data){
         ServiceReturn ret;
-        ret=articleCategoryService.addArticleCategory(data);
+        ret=saleEventService.addSaleEvent(data);
         if(!ret.isOk()) {
             if (ret.getMessage().equals("server error"))
                 return new ResponseEntity(ret.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
-            if (ret.getMessage().equals("parent category not found"))
+            if (ret.getMessage().equals("article category not found"))
                 return new ResponseEntity(ret.getMessage(), HttpStatus.BAD_REQUEST);
-            if (ret.getMessage().equals("article category id taken"))
+            if (ret.getMessage().equals("sale event id taken"))
                 return new ResponseEntity(ret.getMessage(), HttpStatus.CONFLICT);
         }
 
@@ -56,19 +56,19 @@ public class ArticleCategoryController {
     }
 
     @RequestMapping(
-            value = "/{articleCategoryId}",
+            value = "/{saleEventId}",
             method = RequestMethod.PUT,
             consumes = "application/json"
     )
-    public ResponseEntity addArticleCategory(@RequestBody addArticleCategoryDTO data, @PathVariable Long articleCategoryId){
+    public ResponseEntity addArticleCategory(@RequestBody addSaleEventDTO data, @PathVariable Long saleEventId){
         ServiceReturn ret;
-        ret=articleCategoryService.updateArticleCategory(articleCategoryId,data);
+        ret=saleEventService.updateSaleEvent(saleEventId,data);
         if(!ret.isOk()) {
             if (ret.getMessage().equals("server error"))
                 return new ResponseEntity(ret.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
-            if (ret.getMessage().equals("parent category not found"))
+            if (ret.getMessage().equals("article category not found"))
                 return new ResponseEntity(ret.getMessage(), HttpStatus.BAD_REQUEST);
-            if (ret.getMessage().equals("article category doesn't exists"))
+            if (ret.getMessage().equals("sale event doesn't exists"))
                 return new ResponseEntity(ret.getMessage(), HttpStatus.NOT_FOUND);
         }
 
