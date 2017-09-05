@@ -2,19 +2,27 @@
     <div class="row">
         <div class="col-md-4"></div>
         <div class="col-md-4">
+
             <form name="loginForm">
                 <center><h1>Welcome !</h1></center>
+                <!--username-->
                 <div class="form-group">
                     <center><label for="id">Username:</label></center>
-                        <input id="id" type="text" class="form-control" ng-model="ctrl.username" required>
+                    <input id="id" type="text" class="form-control" ng-model="ctrl.username" required>
                 </div>
+                <!--password-->
                 <div class="form-group">
                     <center><label for="pass">Password:</label></center>
-                        <input id="pass" type="password" class="form-control" ng-model="ctrl.password"  required>
+                    <input id="pass" type="password" class="form-control" ng-model="ctrl.password"  required>
                 </div>
-                <center><p ng-show="ctrl.error">{{ctrl.error_msg}}</p></center>
-                <center><button class="btn btn-success" ng-disabled="loginForm.$invalid" ng-click="ctrl.login()">Submit</button></center>
+                <!--submit-->
+                <center><button 
+                    class="btn btn-success" 
+                    ng-disabled="loginForm.$invalid" 
+                    ng-click="ctrl.login()">Login
+                </button></center>
             </form>
+
         </div>
         <div class="col-md-4"></div>
     </div>

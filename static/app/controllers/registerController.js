@@ -4,33 +4,36 @@
 
 			var self=this
 
-			self.step=1
-			self.roles= ['customer','salesman','manager']
-			self.role=self.roles[0]
-			self.error=false
-			self.usernameTaken=false
+				self.step=1
+				
+				self.username
+				self.usernameTaken=false
 
-			self.username
-			self.password
-			self.email
-			self.fname
-			self.lname
+				self.password
 
-			self.address
+				self.fname
 
-			self.n="images/guest.png"
+				self.lname
+
+				self.roles= ['customer','salesman','manager']
+				self.role=self.roles[0]
+
+				self.address
+
+				self.img_preview="/images/guest.png"
+
+				self.file
 
 			self.register = function(){
 
 
-				userService.register(self.username,self.password,
-									 self.fname,self.lname,
-									 self.role,self.address)
+				userService.register(self.username, self.password, self.fname,
+										self.lname, self.role, self.address)
 				.then(function(retval){
-				 	self.error=!retval;
+				 	if(retval) self.step=2
 				})
 
-				if(!self.error) self.step=2
+				
 			}
 
 			self.checkUsername= function(){
@@ -55,7 +58,7 @@
                 var reader = new FileReader();
 
 	            reader.onload = function (e) {
-	                self.n=e.target.result
+	                self.img_preview=e.target.result
 	                $scope.$apply()
 	            }
 	            reader.readAsDataURL(input.files[0]);

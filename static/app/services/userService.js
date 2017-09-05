@@ -15,7 +15,7 @@
 					"role":rl,
 					"address":ad
 				}
-				alert(JSON.stringify(data))
+				
 				var ret= $http.post('api/users',data).then(
 					function(response){
 						return true
