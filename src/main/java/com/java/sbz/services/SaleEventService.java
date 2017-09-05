@@ -41,7 +41,7 @@ public class SaleEventService {
 
             SaleEvent se=new SaleEvent(data);
             se.setArticleCategories(new ArrayList<ArticleCategory>());
-            
+
             //add article categories
             for(Long acid:data.getArticleCategoriesIds()){
                 ArticleCategory ac=articleCategoryRepository.findOne(acid);

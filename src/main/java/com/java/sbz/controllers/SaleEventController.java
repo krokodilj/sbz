@@ -24,7 +24,7 @@ public class SaleEventController {
             method = RequestMethod.GET,
             produces = "application/json"
     )
-    public ResponseEntity getArticleCategories(){
+    public ResponseEntity getSaleEvents(){
         ServiceReturn ret;
         ret=saleEventService.getSaleEvents();
         if(!ret.isOk()) {
@@ -40,7 +40,7 @@ public class SaleEventController {
             method = RequestMethod.POST,
             consumes = "application/json"
     )
-    public ResponseEntity addArticleCategory(@RequestBody addSaleEventDTO data){
+    public ResponseEntity addSaleEvent(@RequestBody addSaleEventDTO data){
         ServiceReturn ret;
         ret=saleEventService.addSaleEvent(data);
         if(!ret.isOk()) {
@@ -60,7 +60,7 @@ public class SaleEventController {
             method = RequestMethod.PUT,
             consumes = "application/json"
     )
-    public ResponseEntity addArticleCategory(@RequestBody addSaleEventDTO data, @PathVariable Long saleEventId){
+    public ResponseEntity updateSaleEvent(@RequestBody addSaleEventDTO data, @PathVariable Long saleEventId){
         ServiceReturn ret;
         ret=saleEventService.updateSaleEvent(saleEventId,data);
         if(!ret.isOk()) {
