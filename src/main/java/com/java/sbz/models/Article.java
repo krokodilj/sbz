@@ -1,5 +1,7 @@
 package com.java.sbz.models;
 
+import com.java.sbz.dtos.addArticleDTO;
+
 import javax.persistence.*;
 import java.util.Date;
 
@@ -11,6 +13,7 @@ import java.util.Date;
 public class Article {
 
     @Id
+    @GeneratedValue
     private Long id;
     private String name;
     @ManyToOne
@@ -22,6 +25,13 @@ public class Article {
     private Integer minimumCount;
 
     public Article(){}
+
+    public Article(addArticleDTO data){
+        this.name=data.getName();
+        this.price=data.getPrice();
+        this.count=data.getCount();
+        this.minimumCount=data.getMinimumCount();
+    }
 
     public Long getId() {
         return id;
