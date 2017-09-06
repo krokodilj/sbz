@@ -1,0 +1,143 @@
+<div class="container-fluid">
+	<center><h1>Article Categories</h1></center>
+	<hr>
+	<div class="row">
+		<div class="col-md-2"></div>
+		<div class="col-md-3">
+
+			<!-- blank -->
+			<div ng-show="ctrl.state==0">
+			
+			</div>
+
+			<!-- add new article category form -->
+			<div ng-show="ctrl.state==1">
+				<form 
+					name="addCategoryForm"
+					class="form-horizontal">
+					<center>
+					<h1>Add new article category</h1>
+
+					<div class="form-group">
+					<label for="id">id code</label>
+					<input type="number" id="id" ng-model="ctrl.fcat.id" required></input>
+					</div>
+
+					<div class="form-group">
+					<label for="name">name</label>
+					<input type="text" id="name" ng-model="ctrl.fcat.name" required></input>
+					</div>
+
+					<div class="form-group">
+					<label for="discount">maximum discount</label>
+					<input type="number" id="discount" min=0 max=1 ng-model="ctrl.fcat.maximumDiscount" required></input>
+					</div>
+
+					<div class="form-group">
+					<label for="articleCategories">pick parent category</label>
+					<select  name="articleCategories" ng-model="ctrl.fcat.parentCategoryId">
+						<option ng-value="ctrl.nocatid">~no parent category~</option>
+				    	<option 
+				    		ng-repeat="c in ctrl.categories" 
+				    		ng-value="c.id"
+				    		ng-selected="c.name=='broad consumption'">
+				    		{{c.name}}
+				    	</option>
+				    </select>
+					</div>
+					
+					<button 
+						class="btn btn-success" 
+						ng-disabled="addCategoryForm.$invalid" 
+						ng-click="ctrl.addCategory()">
+						add
+					</button>
+					
+				</center></form>
+			</div>
+
+			<!-- preview sale -->
+			<div ng-show="ctrl.state==2">
+			<center>
+					<h1>Article Category Details</h1>
+					<p>id:	<strong>{{ctrl.pcat.id}}</strong></p>
+					<p>name:	<strong>{{ctrl.pcat.name}}</strong></p>
+					<p>maximum discount:	<strong>{{ctrl.pcat.maximumDiscount}}</strong></p>	
+					<br>
+					<p><strong>parent category : {{ctrl.pcat.parentCategory.name}}</strong></p>
+
+					<a href="javascript:void(0)" ng-click="ctrl.state=3;ctrl.setUcat()">Update</a>
+			</center>
+			</div>
+
+			<!-- update sale -->
+			<div ng-show="ctrl.state==3">
+				<form 
+					name="updateCategoryForm"
+					class="form-horizontal">
+					<center>
+					<h1>Update article category</h1>
+
+					<div class="form-group">
+					<label for="id">id code</label>
+					<input type="number" id="id" ng-model="ctrl.ucat.id" disabled=""></input>
+					</div>
+
+					<div class="form-group">
+					<label for="name">name</label>
+					<input type="text" id="name" ng-model="ctrl.ucat.name" required></input>
+					</div>
+
+					<div class="form-group">
+					<label for="discount">maximum discount</label>
+					<input type="number" id="discount" min=0 max=1 ng-model="ctrl.ucat.maximumDiscount" required></input>
+					</div>
+
+					<div class="form-group">
+					<label for="articleCategories">pick parent category</label>
+					<select  name="articleCategories" ng-model="ctrl.ucat.parentCategoryId">
+						<option ng-value="ctrl.nocatid" ng-selected="ctrl.nocatid=='ctrl.ucat.parentCategoryId'">~no parent category~</option>
+				    	<option 
+				    		ng-repeat="c in ctrl.categories" 
+				    		ng-value="c.id"
+				    		ng-selected="c.id=='ctrl.ucat.parentCategoryId'"
+				    		ng-if="ctrl.selectedCategory!=c.id">
+				    		{{c.name}}
+				    	</option>
+				    </select>
+					</div>
+					
+					<button 
+						class="btn btn-success" 
+						ng-disabled="updateCategoryForm.$invalid" 
+						ng-click="ctrl.updateCategory()">
+						update
+					</button>
+					
+				</center></form>
+			</div>
+
+
+		</div>
+		<div 
+			style="margin: 10px" 
+			class="col-md-5">
+			<button 
+				class="btn btn-primary btn-block" 
+				ng-click="ctrl.state=1;ctrl.setFcat()">
+				+ add new article category
+			</button>
+
+			<ul class="list-group">
+				<li 
+					class="list-group-item" 
+					ng-repeat="c in ctrl.categories"
+					ng-click="ctrl.selectedCategory= c.id;ctrl.state=2;ctrl.setPcat()">
+					{{c.id}}{{c.name}}
+				</li>
+
+			</ul>
+		</div>
+		<div class="col-md-2"></div>
+	</div>
+</div>

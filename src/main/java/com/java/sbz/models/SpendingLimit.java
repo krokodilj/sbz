@@ -31,7 +31,7 @@ public class SpendingLimit {
         this.percent=data.getPercent();
     }
 
-    public SpendingLimit(Double upperLimit,Double lowerLimit,Double percent){
+    public SpendingLimit(Double lowerLimit,Double upperLimit,Double percent){
         this.upperLimit=upperLimit;
         this.lowerLimit=lowerLimit;
         this.percent=percent;

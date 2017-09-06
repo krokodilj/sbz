@@ -51,6 +51,8 @@ public class ArticleCategoryController {
                 return new ResponseEntity(new ResponseDTO(ret.getMessage()), HttpStatus.BAD_REQUEST);
             if (ret.getMessage().equals("article category id taken"))
                 return new ResponseEntity(new ResponseDTO(ret.getMessage()), HttpStatus.CONFLICT);
+            if (ret.getMessage().equals("don't do this"))
+                return new ResponseEntity(new ResponseDTO(ret.getMessage()), HttpStatus.CONFLICT);
         }
 
         return new ResponseEntity(HttpStatus.OK);

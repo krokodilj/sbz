@@ -41,9 +41,12 @@ public class ArticleCategoryService {
                 ArticleCategory bc=articleCategoryRepository.findOneByName("broad consumption");
                 ac.setParentCategory(bc);
             }else{
-                ArticleCategory pc=articleCategoryRepository.findOne(data.getParentCategoryId());
-                if(pc==null) return new ServiceReturn(false,"parent category not found");
-                ac.setParentCategory(pc);
+                if(data.getParentCategoryId()!=-1) {
+                    ArticleCategory pc = articleCategoryRepository.findOne(data.getParentCategoryId());
+                    if (pc == null) return new ServiceReturn(false, "parent category not found");
+
+                    ac.setParentCategory(pc);
+                }
             }
             articleCategoryRepository.save(ac);
             return new ServiceReturn(true,null);
@@ -66,9 +69,17 @@ public class ArticleCategoryService {
                 ArticleCategory bc=articleCategoryRepository.findOneByName("broad consumption");
                 ac.setParentCategory(bc);
             }else{
-                ArticleCategory pc=articleCategoryRepository.findOne(data.getParentCategoryId());
-                if(pc==null) return new ServiceReturn(false,"parent category not found");
-                ac.setParentCategory(pc);
+                if(data.getParentCategoryId()!=-1){
+                    ArticleCategory pc=articleCategoryRepository.findOne(data.getParentCategoryId());
+                    if(pc==null) return new ServiceReturn(false,"parent category not found");
+                    if(pc.getParentCategory()!=null)
+                        if(pc.getParentCategory().getId()==articleCategoryId) {
+                            return new ServiceReturn(false, "don't do this");
+                        }
+                    ac.setParentCategory(pc);
+                }else{
+                    ac.setParentCategory(null);
+                }
             }
 
             articleCategoryRepository.save(ac);
