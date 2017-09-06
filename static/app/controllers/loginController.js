@@ -11,7 +11,11 @@
 
 			self.login=function(){
 				authService.login(self.username,self.password).then(function(retval){
-					self.error=!retval
+					if(retval.ok){
+						//nthng
+					}else{
+						alert("ERROR "+retval.msg+" ERROR")
+					}
 				})
 
 			}

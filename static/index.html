@@ -23,6 +23,29 @@
             <a href="#/" class="navbar-brand" > BUYSTUFF </a>
         </div>
         <ul class="nav navbar-nav">
+            <!-- manager options -->
+            <li><a 
+                href="#/user_category"
+                ng-show="role=='manager'">
+                User Categories
+            </a></li>
+
+            <li><a 
+                href="#/article_category"
+                ng-show="role=='manager'">
+                Article Categories 
+            </a></li>
+
+            <li><a 
+                href="#/sale_event"
+                ng-show="role=='manager'">
+                Sale Events
+            </a></li>
+
+            <!-- customer options -->
+
+
+            <!-- salesman options -->
 
         </ul>
         <ul class="nav navbar-nav navbar-right">
@@ -43,12 +66,18 @@
 <script src="app/auth/permissionService.js"></script>
 <script src="app/auth/authService.js"></script>
 <script src="app/services/userService.js"></script>
+<script src="app/services/userCategoryService.js"></script>
+<script src="app/services/articleCategoryService.js"></script>
+<script src="app/services/saleEventService.js"></script>
 
 <!-- controllers -->
 <script src="app/controllers/navbarController.js"></script>
 <script src="app/controllers/loginController.js"></script>
 <script src="app/controllers/registerController.js"></script>
 <script src="app/controllers/profileController.js"></script>
+<script src="app/controllers/userCategoryController.js"></script>
+<script src="app/controllers/articleCategoryController.js"></script>
+<script src="app/controllers/saleEventController.js"></script>
 
 </body>
 </html>

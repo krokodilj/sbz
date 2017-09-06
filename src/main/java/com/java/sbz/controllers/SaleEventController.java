@@ -1,5 +1,6 @@
 package com.java.sbz.controllers;
 
+import com.java.sbz.dtos.ResponseDTO;
 import com.java.sbz.dtos.addSaleEventDTO;
 import com.java.sbz.models.SaleEvent;
 import com.java.sbz.services.SaleEventService;
@@ -29,7 +30,7 @@ public class SaleEventController {
         ret=saleEventService.getSaleEvents();
         if(!ret.isOk()) {
             if (ret.getMessage().equals("server error"))
-                return new ResponseEntity(ret.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+                return new ResponseEntity(new ResponseDTO(ret.getMessage()), HttpStatus.INTERNAL_SERVER_ERROR);
         }
 
         return new ResponseEntity(ret.getData(),HttpStatus.OK);
@@ -45,11 +46,11 @@ public class SaleEventController {
         ret=saleEventService.addSaleEvent(data);
         if(!ret.isOk()) {
             if (ret.getMessage().equals("server error"))
-                return new ResponseEntity(ret.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+                return new ResponseEntity(new ResponseDTO(ret.getMessage()), HttpStatus.INTERNAL_SERVER_ERROR);
             if (ret.getMessage().equals("article category not found"))
-                return new ResponseEntity(ret.getMessage(), HttpStatus.BAD_REQUEST);
+                return new ResponseEntity(new ResponseDTO(ret.getMessage()), HttpStatus.BAD_REQUEST);
             if (ret.getMessage().equals("sale event id taken"))
-                return new ResponseEntity(ret.getMessage(), HttpStatus.CONFLICT);
+                return new ResponseEntity(new ResponseDTO(ret.getMessage()), HttpStatus.CONFLICT);
         }
 
         return new ResponseEntity(HttpStatus.OK);
@@ -65,11 +66,11 @@ public class SaleEventController {
         ret=saleEventService.updateSaleEvent(saleEventId,data);
         if(!ret.isOk()) {
             if (ret.getMessage().equals("server error"))
-                return new ResponseEntity(ret.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+                return new ResponseEntity(new ResponseDTO(ret.getMessage()), HttpStatus.INTERNAL_SERVER_ERROR);
             if (ret.getMessage().equals("article category not found"))
-                return new ResponseEntity(ret.getMessage(), HttpStatus.BAD_REQUEST);
+                return new ResponseEntity(new ResponseDTO(ret.getMessage()), HttpStatus.BAD_REQUEST);
             if (ret.getMessage().equals("sale event doesn't exists"))
-                return new ResponseEntity(ret.getMessage(), HttpStatus.NOT_FOUND);
+                return new ResponseEntity(new ResponseDTO(ret.getMessage()), HttpStatus.NOT_FOUND);
         }
 
         return new ResponseEntity(HttpStatus.OK);

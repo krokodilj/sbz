@@ -1,0 +1,175 @@
+<div class="container-fluid">
+	<center><h1>Sale Events</h1></center>
+	<hr>
+	<div class="row">
+		<div class="col-md-2"></div>
+		<div class="col-md-3">
+
+			<!-- blank -->
+			<div ng-show="ctrl.state==0">
+			
+			</div>
+
+			<!-- add new sale event form -->
+			<div ng-show="ctrl.state==1">
+				<form 
+					name="addSaleForm"
+					class="form-horizontal">
+					<center>
+					<h1>Add new sale event</h1>
+
+					<div class="form-group">
+					<label for="id">id code</label>
+					<input type="number" id="id" ng-model="ctrl.fsale.id" required></input>
+					</div>
+
+					<div class="form-group">
+					<label for="name">name</label>
+					<input type="text" id="name" ng-model="ctrl.fsale.name" required></input>
+					</div>
+
+					<div class="form-group">
+					<label for="startdate">start date</label>
+					<input type="date" id="startDate" ng-model="ctrl.fsale.startDate" required></input>
+					</div>
+
+					<div class="form-group">
+					<label for="endDate">end date</label>
+					<input type="date" id="endDate" ng-model="ctrl.fsale.endDate" required></input>
+					</div>
+
+					<div class="form-group">
+					<label for="discount">discount</label>
+					<input type="number" id="discount" min=0 max=1 ng-model="ctrl.fsale.discount" required></input>
+					</div>
+
+					<div class="form-group">
+					<label for="articleCategories">pick article categories</label>
+					<div class="dropdown">
+						<button type="button" class="btn btn-primary  dropdown-toggle" data-toggle="dropdown"><span class="caret"></span></button></button>
+						<ul class="dropdown-menu">
+							<li><a
+								ng-repeat="category in ctrl.articleCategories"
+								href="javascript:void(0);"
+								>
+							  	<input type="checkbox" ng-click="ctrl.checkboxCheck(category.id)"/>
+							  	&nbsp;{{category.name}}
+							</a></li>
+						</ul>
+					</div>
+					categories picked > {{ctrl.fsale.articleCategoriesIds.length}}	
+					</div>
+					
+					<button 
+						class="btn btn-success" 
+						ng-disabled="addSaleForm.$invalid" 
+						ng-click="ctrl.addSale()">
+						add
+					</button>
+					
+				</center></form>
+			</div>
+
+			<!-- preview sale -->
+			<div ng-show="ctrl.state==2">
+			<center>
+					<h1>Sale Event Details</h1>
+					<p>id:	<strong>{{ctrl.psale.id}}</strong></p>
+					<p>name:	<strong>{{ctrl.psale.name}}</strong></p>
+					<p>start date:	<strong>{{ctrl.psale.startDate}}</strong></p>
+					<p>end date:	<strong>{{ctrl.psale.endDate}}</strong></p>
+					<p>discount:	<strong>{{ctrl.psale.discount}}</strong></p>	
+					<br>
+					categories on sale:<p ng-repeat="c in ctrl.psale.articleCategories"><strong>{{c.name}}</strong></p>
+
+					<a href="javascript:void(0)" ng-click="ctrl.state=3;ctrl.setUsale()">Update</a>
+			</center>
+			</div>
+
+			<!-- update sale -->
+			<div ng-show="ctrl.state==3">
+				<form 
+					name="updateSaleForm"
+					class="form-horizontal">
+					<center>
+					<h1>Update sale event</h1>
+
+					<div class="form-group">
+					<label for="id">id code</label>
+					<input type="number" id="id" ng-model="ctrl.usale.id" disabled=""></input>
+					</div>
+
+					<div class="form-group">
+					<label for="name">name</label>
+					<input type="text" id="name" ng-model="ctrl.usale.name" required></input>
+					</div>
+
+					<div class="form-group">
+					<label for="startdate">start date</label>
+					<input type="date" id="startDate" ng-model="ctrl.usale.startDate" required></input>
+					</div>
+
+					<div class="form-group">
+					<label for="endDate">end date</label>
+					<input type="date" id="endDate" ng-model="ctrl.usale.endDate" required></input>
+					</div>
+
+					<div class="form-group">
+					<label for="discount">discount</label>
+					<input type="number" id="discount" min=0 max=1 ng-model="ctrl.usale.discount" required></input>
+					</div>
+
+					<div class="form-group">
+					<label for="articleCategories">pick article categories</label>
+					<div class="dropdown">
+						<button type="button" class="btn btn-primary  dropdown-toggle" data-toggle="dropdown"><span class="caret"></span></button></button>
+						<ul class="dropdown-menu">
+							<li><a
+								ng-repeat="category in ctrl.articleCategories"
+								href="javascript:void(0);"
+								>
+							  	<input 
+							  		type="checkbox" 
+							  		ng-click="ctrl.checkboxCheck(category.id)"
+							  		ng-checked="ctrl.usale.articleCategoriesIds.includes(category.id)"/>
+							  	&nbsp;{{category.name}}
+							</a></li>
+						</ul>
+					</div>
+					categories picked > {{ctrl.usale.articleCategoriesIds.length}}	
+					</div>
+					
+					<button 
+						class="btn btn-success" 
+						ng-disabled="updateSaleForm.$invalid" 
+						ng-click="ctrl.updateSale()">
+						update
+					</button>
+					
+				</center></form>
+			</div>
+
+
+		</div>
+		<div 
+			style="margin: 10px" 
+			class="col-md-5">
+			<button 
+				class="btn btn-primary btn-block" 
+				ng-click="ctrl.state=1;ctrl.setFsale()">
+				+ add new sale event
+			</button>
+
+			<ul class="list-group">
+				<li 
+					class="list-group-item" 
+					ng-repeat="sale in ctrl.sales"
+					ng-click="ctrl.selectedSale= sale.id;ctrl.state=2;ctrl.setPsale()">
+					{{sale.id}}{{sale.name}}
+				</li>
+
+			</ul>
+		</div>
+		<div class="col-md-2"></div>
+	</div>
+</div>

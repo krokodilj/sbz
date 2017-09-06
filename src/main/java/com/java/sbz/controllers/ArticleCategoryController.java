@@ -1,5 +1,6 @@
 package com.java.sbz.controllers;
 
+import com.java.sbz.dtos.ResponseDTO;
 import com.java.sbz.dtos.addArticleCategoryDTO;
 import com.java.sbz.services.ArticleCategoryService;
 import com.java.sbz.util.ServiceReturn;
@@ -29,7 +30,7 @@ public class ArticleCategoryController {
         ret=articleCategoryService.getArticleCategories();
         if(!ret.isOk()) {
             if (ret.getMessage().equals("server error"))
-                return new ResponseEntity(ret.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+                return new ResponseEntity(new ResponseDTO(ret.getMessage()), HttpStatus.INTERNAL_SERVER_ERROR);
         }
 
         return new ResponseEntity(ret.getData(),HttpStatus.OK);
@@ -45,11 +46,11 @@ public class ArticleCategoryController {
         ret=articleCategoryService.addArticleCategory(data);
         if(!ret.isOk()) {
             if (ret.getMessage().equals("server error"))
-                return new ResponseEntity(ret.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+                return new ResponseEntity(new ResponseDTO(ret.getMessage()), HttpStatus.INTERNAL_SERVER_ERROR);
             if (ret.getMessage().equals("parent category not found"))
-                return new ResponseEntity(ret.getMessage(), HttpStatus.BAD_REQUEST);
+                return new ResponseEntity(new ResponseDTO(ret.getMessage()), HttpStatus.BAD_REQUEST);
             if (ret.getMessage().equals("article category id taken"))
-                return new ResponseEntity(ret.getMessage(), HttpStatus.CONFLICT);
+                return new ResponseEntity(new ResponseDTO(ret.getMessage()), HttpStatus.CONFLICT);
         }
 
         return new ResponseEntity(HttpStatus.OK);
@@ -65,11 +66,11 @@ public class ArticleCategoryController {
         ret=articleCategoryService.updateArticleCategory(articleCategoryId,data);
         if(!ret.isOk()) {
             if (ret.getMessage().equals("server error"))
-                return new ResponseEntity(ret.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+                return new ResponseEntity(new ResponseDTO(ret.getMessage()), HttpStatus.INTERNAL_SERVER_ERROR);
             if (ret.getMessage().equals("parent category not found"))
-                return new ResponseEntity(ret.getMessage(), HttpStatus.BAD_REQUEST);
+                return new ResponseEntity(new ResponseDTO(ret.getMessage()), HttpStatus.BAD_REQUEST);
             if (ret.getMessage().equals("article category doesn't exists"))
-                return new ResponseEntity(ret.getMessage(), HttpStatus.NOT_FOUND);
+                return new ResponseEntity(new ResponseDTO(ret.getMessage()), HttpStatus.NOT_FOUND);
         }
 
         return new ResponseEntity(HttpStatus.OK);

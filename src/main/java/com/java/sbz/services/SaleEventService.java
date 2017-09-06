@@ -64,11 +64,13 @@ public class SaleEventService {
             if(cs==null) return new ServiceReturn(false,"sale event doesn't exists");
 
             SaleEvent se=new SaleEvent(data);
+            se.setArticleCategories(new ArrayList<ArticleCategory>());
 
             //add article categories
             for(Long acid:data.getArticleCategoriesIds()){
                 ArticleCategory ac=articleCategoryRepository.findOne(acid);
                 if (ac==null) return  new ServiceReturn(false,"article category not found");
+
                 se.getArticleCategories().add(ac);
             }
 

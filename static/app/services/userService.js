@@ -18,9 +18,9 @@
 				
 				var ret= $http.post('api/users',data).then(
 					function(response){
-						return true
+						return {"ok":true,"data":response.data}
 					},function(error){
-						return false
+						return {"ok":false,"msg":error.data.message}
 					})
 				return ret
 			}
@@ -29,9 +29,9 @@
 
 				var ret= $http.get('api/users/check/'+username).then(
 					function(response){
-						return true
+						return {"ok":true,"data":response.data}
 					},function(error){
-						return false
+						return {"ok":false,"msg":error.data.message}
 					});
 				return ret
 
@@ -45,9 +45,9 @@
 
 				var ret=$http.post('api/users/upload',data,{headers: {'Content-Type': undefined}}).then(
 					function(response){
-						return true
+						return {"ok":true,"data":response.data}
 					},function(error){
-						return false
+						return {"ok":false,"msg":error.data.message}
 					})
 				return ret
 			}
@@ -55,9 +55,9 @@
 			self.getUser=function(username){
 				var ret = $http.get('api/users/'+username).then(
 				function(response){
-					return response.data
+					return {"ok":true,"data":response.data}
 				},function(error){
-					return undefined
+					return {"ok":false,"msg":error.data.message}
 				});
 				return ret;
 			}

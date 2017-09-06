@@ -30,7 +30,11 @@
 				userService.register(self.username, self.password, self.fname,
 										self.lname, self.role, self.address)
 				.then(function(retval){
-				 	if(retval) self.step=2
+				 	if(retval.ok){
+						self.step=2
+					}else{
+						alert("ERROR "+retval.msg+" ERROR")
+					}
 				})
 
 				
@@ -38,7 +42,12 @@
 
 			self.checkUsername= function(){
 				userService.checkUsername(self.username).then(function(retval){
-					self.usernameTaken=!retval
+					if(retval.ok){
+						self.usernameTaken=false
+					}else{
+						self.usernameTaken=true
+						
+					}
 				})
 			}
 
@@ -48,7 +57,7 @@
 
 			self.upload=function(){
 				userService.uploadImage(self.username,self.file).then(function(retval){
-					if(!retval){ alert("image upload ERROR")}
+					if(!retval.ok){ alert("image upload ERROR")}
 					else { authService.login(self.username,self.password)	}
 				})
 			}

@@ -35,6 +35,36 @@
    							}
    						}
    					})
+                  .when("/user_category",{
+                     templateUrl:"app/views/user_category.html",
+                     controller:"userCategoryController",
+                     controllerAs:"ctrl",
+                     resolve:{
+                        "permission":function(permissionService){
+                           permissionService.givePermission(["manager"]);
+                        }
+                     }
+                  })
+                  .when("/article_category",{
+                     templateUrl:"app/views/article_category.html",
+                     controller:"articleCategoryController",
+                     controllerAs:"ctrl",
+                     resolve:{
+                        "permission":function(permissionService){
+                           permissionService.givePermission(["manager"]);
+                        }
+                     }
+                  })
+                  .when("/sale_event",{
+                     templateUrl:"app/views/sale_event.html",
+                     controller:"saleEventController",
+                     controllerAs:"ctrl",
+                     resolve:{
+                        "permission":function(permissionService){
+                           permissionService.givePermission(["manager"]);
+                        }
+                     }
+                  })
    					.otherwise({
    						redirectTo:"/"
    					})

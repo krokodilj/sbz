@@ -1,5 +1,6 @@
 package com.java.sbz.controllers;
 
+import com.java.sbz.dtos.ResponseDTO;
 import com.java.sbz.dtos.addUserDTO;
 import com.java.sbz.services.UserService;
 import com.java.sbz.util.ServiceReturn;
@@ -67,11 +68,11 @@ public class UserController {
         ret=userService.login(data);
         if(!ret.isOk()){
             if(ret.getMessage().equals("server error"))
-                return new ResponseEntity(ret.getMessage(),HttpStatus.INTERNAL_SERVER_ERROR);
+                return new ResponseEntity(new ResponseDTO(ret.getMessage()),HttpStatus.INTERNAL_SERVER_ERROR);
             if(ret.getMessage().equals("username doesn't exists"))
-                return new ResponseEntity(ret.getMessage(),HttpStatus.NOT_FOUND);
+                return new ResponseEntity(new ResponseDTO(ret.getMessage()),HttpStatus.NOT_FOUND);
             if(ret.getMessage().equals("password doesn't match"))
-                return new ResponseEntity(ret.getMessage(),HttpStatus.UNAUTHORIZED);
+                return new ResponseEntity(new ResponseDTO(ret.getMessage()),HttpStatus.UNAUTHORIZED);
         }
 
         return new ResponseEntity(ret.getData(),HttpStatus.OK);
@@ -80,15 +81,16 @@ public class UserController {
     @RequestMapping(
             value = "/check/{username}",
             method = RequestMethod.GET
+
     )
     public ResponseEntity checkUsername(@PathVariable String username){
         ServiceReturn ret;
         ret=userService.checkUsername(username);
         if(!ret.isOk()) {
             if (ret.getMessage().equals("server error"))
-                return new ResponseEntity(ret.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+                return new ResponseEntity(new ResponseDTO(ret.getMessage()), HttpStatus.INTERNAL_SERVER_ERROR);
             if (ret.getMessage().equals("username not available"))
-                return new ResponseEntity(ret.getMessage(),HttpStatus.UNAVAILABLE_FOR_LEGAL_REASONS);
+                return new ResponseEntity(new ResponseDTO(ret.getMessage()),HttpStatus.UNAVAILABLE_FOR_LEGAL_REASONS);
         }
 
         return new ResponseEntity(HttpStatus.OK);
@@ -104,9 +106,9 @@ public class UserController {
         ret=userService.uploadPicture(file,username);
         if(!ret.isOk()) {
             if (ret.getMessage().equals("server error"))
-                return new ResponseEntity(ret.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+                return new ResponseEntity(new ResponseDTO(ret.getMessage()), HttpStatus.INTERNAL_SERVER_ERROR);
             if (ret.getMessage().equals("user doesn't exists"))
-                return new ResponseEntity(ret.getMessage(), HttpStatus.BAD_REQUEST);
+                return new ResponseEntity(new ResponseDTO(ret.getMessage()), HttpStatus.BAD_REQUEST);
 
         }
 

@@ -1,0 +1,46 @@
+<div class="container-fluid">
+	<center><h1>User Categories</h1></center>
+	<hr>
+	<div class="row" ng-repeat="category in ctrl.categories">
+		<div class="col-md-2"></div>
+		<div class="col-md-8">
+			<center><h2>{{category.name}} User</h2>
+			<h3>spending limits</h3></center>
+			<table class="table" >
+						<thead>
+							<tr>
+								<th>lower limit</th>
+								<th>upper limit</th>
+								<th>percent</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr ng-repeat="limit in category.spendingLimit">
+								<td><input type="number" ng-model="limit.lowerLimit"></td>
+								<td><input type="number" ng-model="limit.upperLimit"></td>
+								<td><input 	style="width:100%"  type="number" ng-model="limit.percent" min="0" max="1"></td>
+								<td><span  
+									class="glyphicon glyphicon-remove" 
+									style="cursor:pointer" 
+									ng-click="ctrl.removeLimit(category.id,limit)">
+								</span></td>
+
+							</tr>
+							<tr>
+								<center><button 
+									class="btn btn-primary pull-right" 
+									ng-click="ctrl.addLimit(category.id)"><span class="glyphicon glyphicon-plus"></span></button></center>
+							</tr>
+							<tr>
+								<td></td>
+								<center><td><button 
+									class="btn btn-success" 
+									ng-click="ctrl.saveCategory(category.id,category.spendingLimit)">Save</button></td></center>
+								<td></td>
+							</tr>
+						</tbody>
+					</table>
+		</div>
+		<div class="col-md-2"></div>
+	</div>
+</div>

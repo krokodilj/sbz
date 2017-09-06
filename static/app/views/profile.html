@@ -1,0 +1,42 @@
+<div class='container-fluid'>
+	<div class="row">
+		<div class="col-md-2"></div>
+		<div class="col-md-3">
+			<img src="{{ctrl.user.imageSrc}}" width="200px" height="200px">
+			<h3>{{ctrl.user.username}}</h3>
+			<h5>{{ctrl.user.firstName}}</h5>
+			<h5>{{ctrl.user.lastName}}</h5>
+			<h5>{{ctrl.user.registered}}</h5>
+		</div>
+		<div class="col-md-5">
+			<!-- manager dashboard -->
+			<div ng-show="role=='manager' && name==ctrl.user.username">
+				<center><h1>Manager options</h1></center>
+				<hr>
+				<a  
+					href="#/user_category" 
+					class="btn btn-primary btn-block" >
+					Update spending limits
+				</a>
+				<br>
+				<a  
+					href="#/article_category" 
+					class="btn btn-primary btn-block" >
+					Manage article categories
+				</a>
+				<br>
+				<a  
+					href="#/sale_event" 
+					class="btn btn-primary btn-block" >
+					Manage sale events
+				</a>
+
+			</div>
+
+			<!-- customer dashboard -->
+			<div ng-show="role=='customer'">
+
+			</div>
+		</div>
+	</div>
+</div>

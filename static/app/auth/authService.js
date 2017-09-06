@@ -18,9 +18,9 @@
                             $cookies.putObject("token",response.data)
                             $http.defaults.headers.common.Authorization = response.data;
                             $window.location.href="#/"
-                            return true
-                    },function(error){
-                            return false
+                            return  {"ok":true,"data":response.data}
+                    },function(response){	
+                            return {"ok":false,"msg":response.data.message}
                     })
 
 				return ret
@@ -48,7 +48,7 @@
 			self.getUserName=function(){
 				var token = $cookies.getObject('token')
 				if(!token) return 'guest';
-				return token.name;
+				return token.username;
 			}
 
 			$rootScope.role=self.getUserRole();
