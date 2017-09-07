@@ -26,12 +26,14 @@ public class ArticleController {
             produces = "application/json"
     )
     public ResponseEntity getArticle(
-                @RequestParam(required = false) Long page,
-                @RequestParam(required = false ) String nameq,
-                @RequestParam(required = false ) String category)
+                @RequestParam(required = false) Long id,
+                @RequestParam(required = false ) String name,
+                @RequestParam(required = false ) Integer min,
+                @RequestParam(required = false ) Integer max,
+                @RequestParam(required = false ) Long category)
     {
         ServiceReturn ret;
-        ret=articleService.getArticles();
+        ret=articleService.getArticles(id,name,min,max,category);
         if(!ret.isOk()) {
             if (ret.getMessage().equals("server error"))
                 return new ResponseEntity(new ResponseDTO(ret.getMessage()), HttpStatus.INTERNAL_SERVER_ERROR);

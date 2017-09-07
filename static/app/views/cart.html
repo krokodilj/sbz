@@ -1,0 +1,47 @@
+<div class="container-fluid">
+<div class="row">
+	<center><h1>Cart</h1></center>
+	<hr>
+
+	<div class="col-md-2"></div>
+	<div class="col-md-8">
+		<div class="row">
+				<!-- order -->
+				<div ng-show="ctrl.order">
+
+				<button class="btn btn-success btn-block">Confirm</button>
+				</div>
+
+				
+				<button 
+					class="btn btn-success btn-block" 
+					ng-click="ctrl.createOrder()">
+					Create Order
+				</button>
+				<!-- cart items -->
+				<div 
+					style="border-style: ridge;"
+					class="col-md-3" 
+					ng-repeat="article in ctrl.cart"><center>
+					<span 
+						style="cursor: pointer;"
+						ng-click="ctrl.remove(article)" 
+						class="glyphicon glyphicon-remove">
+					</span>
+					<small>{{article.id}}</small><br>
+					<img src="{{}}" width="150px" height="150px">
+					<p><strong>{{article.name}}</strong></p>
+					<p>price:<strong>{{article.price}}</strong></p>
+					<p>count:<strong>{{article.number}}</strong></p>
+					
+
+					<p>{{article.category.name}}
+				</center></div>
+		</div>
+
+
+	</div>
+	<div class="col-md-2"></div>
+
+</div>
+</div>

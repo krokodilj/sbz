@@ -1,9 +1,9 @@
 (function(){
-   angular.module('buystuff',['ngRoute','ngCookies'])
+   angular.module('buystuff',['ngRoute','ngCookies','ngStorage'])
    		.config(function($routeProvider){
    				$routeProvider
    					.when("/",{
-
+                     redirectTo:"/buy"
    					})
    					.when("/login",{
    						templateUrl:"app/views/login.html",
@@ -64,6 +64,16 @@
                            permissionService.givePermission(["manager"]);
                         }
                      }
+                  })
+                  .when("/buy",{
+                     templateUrl:"app/views/all_articles.html",
+                     controller:"allArticlesController",
+                     controllerAs:"ctrl"
+                  })
+                  .when("/cart",{
+                     templateUrl:"app/views/cart.html",
+                     controller:"cartController",
+                     controllerAs:"ctrl"
                   })
    					.otherwise({
    						redirectTo:"/"

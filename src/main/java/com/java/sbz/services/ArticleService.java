@@ -6,6 +6,8 @@ import com.java.sbz.models.ArticleCategory;
 import com.java.sbz.repository.ArticleCategoryRepository;
 import com.java.sbz.repository.ArticleRepository;
 import com.java.sbz.util.ServiceReturn;
+import org.kie.api.runtime.KieContainer;
+import org.kie.api.runtime.KieSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -24,10 +26,14 @@ public class ArticleService {
     @Autowired
     private ArticleCategoryRepository articleCategoryRepository;
 
+    @Autowired
+    private KieContainer kieContainer;
 
-    public ServiceReturn getArticles(){
+    public ServiceReturn getArticles(Long id,String name,Integer min,Integer max,Long category){
         try{
-            List<Article> data=articleRepository.findAll();
+
+
+            List<Article> data=articleRepository.search(id,name,min,max,category);
 
             return new ServiceReturn(true,null,data);
         }catch(Exception e){
@@ -64,10 +70,6 @@ public class ArticleService {
 
             article.setCount(data.getCount());
 
-            if(article.getCount()<article.getMinimumCount())
-                article.setStatus(false);
-            else
-                article.setStatus(true);
             articleRepository.save(article);
 
             return new ServiceReturn(true,null,data);

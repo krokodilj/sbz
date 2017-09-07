@@ -5,6 +5,8 @@
     <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.7/angular-route.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.7/angular-cookies.js"></script>
 
+    <script  src="https://cdnjs.cloudflare.com/ajax/libs/ngStorage/0.3.11/ngStorage.js"></script>
+
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u"
           crossorigin="anonymous">
@@ -20,7 +22,7 @@
 <nav class="navbar navbar-inverse" ng-controller="navbarController as ctrl">
     <div class="container-fluid">
         <div class="navbar-header">
-            <a href="#/" class="navbar-brand" > BUYSTUFF </a>
+            <a href="#/buy" class="navbar-brand" > BUYSTUFF </a>
         </div>
         <ul class="nav navbar-nav">
             <!-- manager options -->
@@ -43,6 +45,11 @@
             </a></li>
 
             <!-- customer options -->
+            <li><a 
+                href="#/cart"
+                ng-show="role=='customer' || role=='guest'">
+                Cart
+            </a></li>
 
 
             <!-- salesman options -->
@@ -69,6 +76,10 @@
 <script src="app/services/userCategoryService.js"></script>
 <script src="app/services/articleCategoryService.js"></script>
 <script src="app/services/saleEventService.js"></script>
+<script src="app/services/articleService.js"></script>
+<script src="app/services/cartService.js"></script>
+<script src="app/services/orderService.js"></script>
+
 
 <!-- controllers -->
 <script src="app/controllers/navbarController.js"></script>
@@ -78,6 +89,9 @@
 <script src="app/controllers/userCategoryController.js"></script>
 <script src="app/controllers/articleCategoryController.js"></script>
 <script src="app/controllers/saleEventController.js"></script>
+<script src="app/controllers/allArticlesController.js"></script>
+<script src="app/controllers/cartController.js"></script>
+
 
 </body>
 </html>
