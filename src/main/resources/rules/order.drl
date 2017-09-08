@@ -1,0 +1,251 @@
+package rules
+
+import com.java.sbz.models.Receipt;
+import com.java.sbz.models.ItemDiscount;
+import com.java.sbz.models.Item;
+import com.java.sbz.models.OrderDiscount;
+import com.java.sbz.models.SaleEvent;
+import com.java.sbz.models.ArticleCategory;
+
+
+import org.apache.commons.lang.time.DateUtils;
+
+import java.util.Date;
+import java.util.concurrent.TimeUnit;
+import java.util.ArrayList;
+import java.util.Iterator;
+
+
+
+rule "a"
+	agenda-group "order_discounts"
+
+    when
+    	$r: Receipt($items: items)
+    	$i: Item(
+    	    amount > 20,
+    	    article.getCategory().getName()!="broad_consumption")	from $items
+
+    then
+    	System.out.println("dodat popust na osnovu pravila ~a");
+    	ItemDiscount discount=new ItemDiscount();
+    	discount.setDiscount(0.1);
+    	discount.setStatus("base");
+    	$i.getDiscounts().add(discount);
+
+end
+
+rule "b"
+	agenda-group "order_discounts"
+
+    when
+    	$r: Receipt($items: items)
+    	$i: Item(
+    	    amount > 5,
+    	    article.getCategory().getName() in("tvs","computers","laptops") )	from $items
+
+    then
+    	System.out.println("dodat popust na osnovu pravila ~b");
+    	ItemDiscount discount=new ItemDiscount();
+    	discount.setDiscount(0.05);
+    	discount.setStatus("base");
+    	$i.getDiscounts().add(discount);
+
+end
+
+rule "c"
+	agenda-group "order_discounts"
+
+    when
+    	$r: Receipt($items: items)
+    	$i: Item(
+    	    totalPrice > 5000,
+    	    article.getCategory().getName() in("broad consumption") )	from $items
+
+    then
+    	System.out.println("dodat popust na osnovu pravila ~c");
+    	ItemDiscount discount=new ItemDiscount();
+    	discount.setDiscount(0.07);
+    	discount.setStatus("base");
+    	$i.getDiscounts().add(discount);
+
+end
+
+
+rule "d same article last 15 days"
+	agenda-group "order_discounts"
+
+    when
+    	Receipt(
+    	    $items: items ,
+    	    $oldrs : customer.getOrders())
+    	Receipt(
+                date.getTime() > new Date().getTime() - (15*60*60*24*1000),
+                state == "RESOLVED",
+                $oldis15 : items) from $oldrs
+            $oldi : Item() from $oldis15
+    	$i: Item(
+    	    article.getId() == $oldi.getArticle().getId() ) from $items
+
+    then
+    	System.out.println("dodat popust na osnovu pravila ~d");
+    	ItemDiscount discount=new ItemDiscount();
+    	discount.setDiscount(0.02);
+    	discount.setStatus("additional");
+    	$i.getDiscounts().add(discount);
+
+end
+
+rule "e same article category last month"
+	agenda-group "order_discounts"
+
+    when
+    	Receipt(
+         	    $items: items ,
+           	    $oldrs : customer.getOrders())
+        Receipt(
+                date.getTime() > (new Date().getTime() - TimeUnit.DAYS.toMillis(30)),
+                state == "RESOLVED",
+                $oldis15 : items) from $oldrs
+        $oldi : Item() from $oldis15
+        $i: Item(
+         	    article.getCategory().getId() == $oldi.getArticle().getCategory().getId() ) from $items
+
+    then
+    	System.out.println("dodat popust na osnovu pravila ~e");
+    	ItemDiscount discount=new ItemDiscount();
+    	discount.setDiscount(0.01);
+    	discount.setStatus("additional");
+    	$i.getDiscounts().add(discount);
+
+end
+
+
+rule "f  sale events discount"
+    agenda-group "order_discounts"
+
+    when
+
+        Receipt($items: items, $date : date)
+        $se : SaleEvent(startDate < $date, $date < endDate, $categories: articleCategories)
+        $category: ArticleCategory() from $categories
+        $i :Item(article.getCategory().getId() == $category.getId() ) from $items
+    then
+        System.out.println("dodat popust na osnovu pravila ~f");
+        ItemDiscount discount=new ItemDiscount();
+        discount.setDiscount($se.getDiscount());
+        discount.setStatus("additional");
+        $i.getDiscounts().add(discount);
+end
+
+rule "g final price for item"
+    agenda-group "order_discounts"
+    salience -1
+
+    when
+        Receipt($items: items )
+        $i :Item( $discounts : discounts , $maxDiscount : article.getCategory().getMaximumDiscount()) from $items
+        $base : ItemDiscount(status=="base",$max:discount) from $discounts
+                not ItemDiscount(status=="base",discount > $max) from $discounts
+        $add:   Double() from accumulate(
+                    ItemDiscount(status=="additional", $value: discount)from $discounts , sum($value))
+
+    then
+        System.out.println("pravilo g izracunavanje svega za iteme");
+
+        $i.setDiscount($base.getDiscount()+$add);
+
+        if($i.getDiscount()>$maxDiscount) $i.setDiscount($maxDiscount);
+
+        $i.setPrice((1-$i.getDiscount())*$i.getTotalPrice());
+
+        for (Iterator<ItemDiscount> iterator = $i.getDiscounts().iterator(); iterator.hasNext(); ) {
+            ItemDiscount id = iterator.next();
+            if (id.getStatus().equals("base") && id.getDiscount() < $base.getDiscount()   ) {
+                iterator.remove();
+            }
+
+        }
+
+end
+
+rule "h total price > 200000"
+	agenda-group "order_discounts"
+    salience -2
+
+    when
+    	$r:Receipt( $items: items )
+
+        Double(doubleValue > 200000) from accumulate(
+                                     Item($value :totalPrice) from $items,
+                                     sum($value)
+                                      )
+    then
+    	System.out.println("dodat popust na osnovu pravila ~h total >200000");
+    	OrderDiscount discount=new OrderDiscount();
+    	discount.setDiscount(0.05);
+    	discount.setStatus("base");
+    	$r.getDiscounts().add(discount);
+
+end
+
+rule "i user registereg for 2y"
+	agenda-group "order_discounts"
+
+    when
+    	$r:Receipt( customer.getRegistered().before(DateUtils.addYears(new Date(),-2)) )
+
+    then
+    	System.out.println("dodat popust na osnovu pravila ~i reg more than 2y");
+    	OrderDiscount discount=new OrderDiscount();
+    	discount.setDiscount(0.01);
+    	discount.setStatus("additional");
+    	$r.getDiscounts().add(discount);
+
+end
+
+rule "j gold and silver user"
+	agenda-group "order_discounts"
+
+    when
+    	$r:Receipt( customer.getUserProfile().getUserCategory().getName() in ("Silver","Gold") )
+
+    then
+    	System.out.println("dodat popust na osnovu pravila ~j gold and silver user");
+    	OrderDiscount discount=new OrderDiscount();
+    	discount.setDiscount(0.01);
+    	discount.setStatus("additional");
+    	$r.getDiscounts().add(discount);
+
+end
+
+
+rule "l final price for order"
+	agenda-group "order_discounts"
+    salience -3
+
+    when
+    	$r:Receipt( $items : items ,$discounts: discounts)
+    	$discount : Double() from accumulate(
+    	                OrderDiscount($value : discount) from $discounts ,
+    	                sum($value)
+    	                )
+
+    	$total : Double() from accumulate(
+            	                Item($value:totalPrice) from $items,
+            	                sum($value)
+            	                )
+        $final : Double() from accumulate(
+                    	                Item($value:price) from $items,
+                    	                sum($value)
+                    	                )
+
+
+    then
+    	System.out.println("pravilo l izracunavanje svega za order");
+
+        $r.setTotalPrice($total);
+        $r.setDiscount($discount);
+        $r.setPrice((1-$discount)*$final);
+
+end

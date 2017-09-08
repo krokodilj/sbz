@@ -12,7 +12,7 @@
 			}
 
 			self.createOrder=function(){
-				orderService.calculateOrder(self.cart).then(function(){
+				orderService.calculateOrder(self.cart).then(function(retval){
 					if(retval.ok){
 						self.order=retval.data
 					}else{

@@ -8,10 +8,22 @@
 			
 
 		self.add=function(article,count){
-			var a=JSON.parse(JSON.stringify(article))
-			a["number"]=count
-			
-			self.cart.push(a)
+
+			var idx=-1
+			self.cart.forEach(function(e,i){
+				if(e.id==article.id) idx=i
+			})
+
+			if(idx!=-1){
+				self.cart[idx].number+=count
+			}
+			else{
+				var a=JSON.parse(JSON.stringify(article))
+				a["number"]=count
+				
+				//ako ne postoji u listi
+				self.cart.push(a)
+			}
 			
 		}
 

@@ -1,10 +1,12 @@
 package com.java.sbz.models;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.java.sbz.dtos.addUserDTO;
 
 import javax.persistence.*;
 import java.util.Date;
+import java.util.List;
 
 /**
  * Created by sirko on 9/1/17.
@@ -25,6 +27,10 @@ public class User {
     private Date registered;
     @OneToOne(cascade = {CascadeType.ALL})
     private UserProfile userProfile;
+
+    @OneToMany(fetch = FetchType.LAZY)
+    @JsonIgnore
+    private List<Receipt> orders;
 
     public User(){}
 
@@ -98,6 +104,14 @@ public class User {
 
     public void setImageSrc(String imageSrc) {
         this.imageSrc = imageSrc;
+    }
+
+    public List<Receipt> getOrders() {
+        return orders;
+    }
+
+    public void setOrders(List<Receipt> orders) {
+        this.orders = orders;
     }
 
     @Override

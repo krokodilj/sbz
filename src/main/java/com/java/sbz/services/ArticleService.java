@@ -29,7 +29,7 @@ public class ArticleService {
     @Autowired
     private KieContainer kieContainer;
 
-    public ServiceReturn getArticles(Long id,String name,Integer min,Integer max,Long category){
+    public ServiceReturn getArticles(Long id,String name,Double min,Double max,Long category){
         try{
 
 

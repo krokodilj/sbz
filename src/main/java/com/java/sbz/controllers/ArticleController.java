@@ -28,8 +28,8 @@ public class ArticleController {
     public ResponseEntity getArticle(
                 @RequestParam(required = false) Long id,
                 @RequestParam(required = false ) String name,
-                @RequestParam(required = false ) Integer min,
-                @RequestParam(required = false ) Integer max,
+                @RequestParam(required = false ) Double min,
+                @RequestParam(required = false ) Double max,
                 @RequestParam(required = false ) Long category)
     {
         ServiceReturn ret;
