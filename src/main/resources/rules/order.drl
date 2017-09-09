@@ -145,28 +145,28 @@ rule "g final price for item"
     when
         Receipt($items: items )
         $i :Item( $discounts : discounts , $maxDiscount : article.getCategory().getMaximumDiscount()) from $items
-        $base : ItemDiscount(status=="base",$max:discount) from $discounts
-                not ItemDiscount(status=="base",discount > $max) from $discounts
+       // $base :Double() from accumulate(
+       //                            ItemDiscount(status=="base", $value: discount)from $discounts , max($value))
         $add:   Double() from accumulate(
                     ItemDiscount(status=="additional", $value: discount)from $discounts , sum($value))
 
     then
         System.out.println("pravilo g izracunavanje svega za iteme");
-
-        $i.setDiscount($base.getDiscount()+$add);
-
-        if($i.getDiscount()>$maxDiscount) $i.setDiscount($maxDiscount);
-
-        $i.setPrice((1-$i.getDiscount())*$i.getTotalPrice());
-
-        for (Iterator<ItemDiscount> iterator = $i.getDiscounts().iterator(); iterator.hasNext(); ) {
-            ItemDiscount id = iterator.next();
-            if (id.getStatus().equals("base") && id.getDiscount() < $base.getDiscount()   ) {
-                iterator.remove();
-            }
-
+        Double max=0.0;
+        for(ItemDiscount a:$i.getDiscounts()){
+            if(a.getDiscount() > max && a.getStatus().equals("base")) max=a.getDiscount();
         }
+        for (Iterator<ItemDiscount> iterator = $i.getDiscounts().iterator(); iterator.hasNext(); ) {
+           ItemDiscount id = iterator.next();
+           if (id.getStatus().equals("base") && (id.getDiscount() < max)   ) {
+               iterator.remove();
+           }
+        }
+        $i.setDiscount($add+max);
 
+        if($i.getDiscount()>$maxDiscount)
+                        $i.setDiscount($maxDiscount);
+        $i.setPrice((1-$i.getDiscount())*$i.getTotalPrice());
 end
 
 rule "h total price > 200000"
@@ -191,6 +191,7 @@ end
 
 rule "i user registereg for 2y"
 	agenda-group "order_discounts"
+     salience -2
 
     when
     	$r:Receipt( customer.getRegistered().before(DateUtils.addYears(new Date(),-2)) )
@@ -206,7 +207,7 @@ end
 
 rule "j gold and silver user"
 	agenda-group "order_discounts"
-
+     salience -2
     when
     	$r:Receipt( customer.getUserProfile().getUserCategory().getName() in ("Silver","Gold") )
 
@@ -231,10 +232,7 @@ rule "l final price for order"
     	                sum($value)
     	                )
 
-    	$total : Double() from accumulate(
-            	                Item($value:totalPrice) from $items,
-            	                sum($value)
-            	                )
+
         $final : Double() from accumulate(
                     	                Item($value:price) from $items,
                     	                sum($value)
@@ -244,7 +242,7 @@ rule "l final price for order"
     then
     	System.out.println("pravilo l izracunavanje svega za order");
 
-        $r.setTotalPrice($total);
+        $r.setTotalPrice($final);
         $r.setDiscount($discount);
         $r.setPrice((1-$discount)*$final);
 

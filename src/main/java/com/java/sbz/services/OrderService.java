@@ -84,8 +84,9 @@ public class OrderService {
     public ServiceReturn addOrder(Receipt order){
         try{
 
+            order.setState("NEW");
 
-
+            orderRepository.save(order);
 
             return new ServiceReturn(true,null);
         }catch(Exception e){

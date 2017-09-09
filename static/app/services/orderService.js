@@ -28,5 +28,19 @@
 				}
 				return ret
 			}
+
+			self.order=function(order){
+				var ret=$http.post("api/order",order).then(
+						function(response){
+							return {"ok":true,"data":response.data}
+						},function(error){
+							return {"ok":false,"msg":error.data.msg}	
+						})
+
+				return ret
+
+			}
+
+
 		})
 })()
