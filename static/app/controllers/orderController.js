@@ -20,7 +20,7 @@
 			self.processOrder=function(orderId){
 				orderService.processOrder(orderId).then(function(retval){
                               if(retval.ok){
-                                    alert("finished")
+                                    self.getOrders()
                                     
                               }else{
                                     alert("ERROR "+retval.msg+" ERROR")

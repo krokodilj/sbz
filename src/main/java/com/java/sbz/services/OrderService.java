@@ -83,10 +83,14 @@ public class OrderService {
 
     public ServiceReturn addOrder(Receipt order){
         try{
-
+            List<Receipt> r=orderRepository.findAllByCustomer(order.getCustomer());
+            r.add(order);
+            User u = order.getCustomer();
+            u.setOrders(r);
             order.setState("IN PROCESS");
 
             orderRepository.save(order);
+            userRepository.save(u);
 
             return new ServiceReturn(true,null);
         }catch(Exception e){
@@ -109,7 +113,7 @@ public class OrderService {
 
     public ServiceReturn getOrders(){
         try{
-           
+
             List<Receipt> data = orderRepository.findAll();
 
             return new ServiceReturn(true,null,data);
@@ -119,5 +123,38 @@ public class OrderService {
         }
     }
 
+    public ServiceReturn processOrder(Long orderId){
+        try{
+
+            Receipt order=orderRepository.findOne(orderId);
+            order.setState("RESOLVED");
+            KieSession kieSession = kieContainer.newKieSession("session");
+            kieSession.insert(order);
+
+            kieSession.getAgenda().getAgendaGroup("process_order").setFocus();
+            kieSession.fireAllRules();
+            kieSession.destroy();
+
+            orderRepository.save(order);
+            //apdejt usera i artikala
+            if(order.getState().equals("RESOLVED")){
+                User u=userRepository.findOneByUsername(order.getCustomer().getUsername());
+                u.getUserProfile().setBuyingPoints(u.getUserProfile().getBuyingPoints()+order.getPointsEarned()-order.getPointsSpent());
+                userRepository.save(u);
+
+                for(Item i : order.getItems()){
+                    Article a=i.getArticle();
+                    a.setCount(a.getCount()-i.getAmount());
+                    articleRepository.save(a);
+                }
+
+            }
+
+            return new ServiceReturn(true,null);
+        }catch(Exception e){
+            e.printStackTrace();
+            return new ServiceReturn(false,"server error");
+        }
+    }
 
 }

@@ -6,6 +6,7 @@ import com.java.sbz.models.Item;
 import com.java.sbz.models.OrderDiscount;
 import com.java.sbz.models.SaleEvent;
 import com.java.sbz.models.ArticleCategory;
+import com.java.sbz.models.SpendingLimit;
 
 
 import org.apache.commons.lang.time.DateUtils;
@@ -247,3 +248,34 @@ rule "l final price for order"
         $r.setPrice((1-$discount)*$final);
 
 end
+
+
+rule "m calculate earned points"
+    agenda-group "order_discounts"
+        salience -4
+
+        when
+        	$r:Receipt( $price:price,$limits : customer.getUserProfile().getUserCategory().getSpendingLimit())
+        	SpendingLimit($p:percent, lowerLimit < $price, $price < upperLimit) from $limits
+
+
+        then
+        	System.out.println("pravilo l izracunavanje bonusa");
+
+            $r.setPointsEarned(Math.floor($r.getPrice()*$p));
+
+
+    end
+
+rule "refuse order if low on supplies"
+	agenda-group "process_order"
+
+    when
+        $r:Receipt($items: items)
+        Item(article.getCount() - amount < 0) from $items
+    then
+        System.out.println("refuse order - low on supplies");
+        $r.setState("DENIED");
+
+end
+

@@ -100,4 +100,25 @@ public class OrderController {
         return new ResponseEntity(ret.getData(),HttpStatus.OK);
     }
 
+
+    @RequestMapping(
+            value = "/{orderId}",
+            method = RequestMethod.PUT
+    )
+    public ResponseEntity processUserOrder(@PathVariable Long orderId){
+        ServiceReturn ret;
+
+        ret=orderService.processOrder(orderId);
+
+        if(!ret.isOk()) {
+            if (ret.getMessage().equals("server error"))
+                return new ResponseEntity(new ResponseDTO(ret.getMessage()), HttpStatus.INTERNAL_SERVER_ERROR);
+
+            return new ResponseEntity(new ResponseDTO(ret.getMessage()), HttpStatus.CONFLICT);
+        }
+
+        return new ResponseEntity(ret.getData(),HttpStatus.OK);
+    }
+
+
 }
