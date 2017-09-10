@@ -41,6 +41,40 @@
 
 			}
 
+			self.getUserOrders=function(user){
+				var ret=$http.get("api/order/"+user).then(
+						function(response){
+							return {"ok":true,"data":response.data}
+						},function(error){
+							return {"ok":false,"msg":error.data.msg}	
+						})
+
+				return ret
+
+			}
+
+			self.getOrders=function(){
+				var ret=$http.get("api/order").then(
+						function(response){
+							return {"ok":true,"data":response.data}
+						},function(error){
+							return {"ok":false,"msg":error.data.msg}	
+						})
+
+				return ret
+			}
+
+			self.processOrder=function(orderId){
+				var ret=$http.put("api/order/"+orderId).then(
+						function(response){
+							return {"ok":true,"data":response.data}
+						},function(error){
+							return {"ok":false,"msg":error.data.msg}	
+						})
+
+				return ret	
+			}
+
 
 		})
 })()

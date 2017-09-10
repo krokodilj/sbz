@@ -73,7 +73,22 @@
                   .when("/cart",{
                      templateUrl:"app/views/cart.html",
                      controller:"cartController",
-                     controllerAs:"ctrl"
+                     controllerAs:"ctrl",
+                     resolve:{
+                        "permission":function(permissionService){
+                           permissionService.givePermission(["customer","guest"]);
+                        }
+                     }
+                  })
+                  .when("/orders",{
+                     templateUrl:"app/views/orders.html",
+                     controller:"orderController",
+                     controllerAs:"ctrl",
+                     resolve:{
+                        "permission":function(permissionService){
+                           permissionService.givePermission(["salesman"]);
+                        }
+                     }
                   })
    					.otherwise({
    						redirectTo:"/"

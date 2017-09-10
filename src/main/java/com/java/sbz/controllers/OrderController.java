@@ -62,4 +62,42 @@ public class OrderController {
         return new ResponseEntity(ret.getData(),HttpStatus.OK);
     }
 
+    @RequestMapping(
+            value = "/{username}",
+            method = RequestMethod.GET
+    )
+    public ResponseEntity getUserOrders(@PathVariable String username){
+        ServiceReturn ret;
+
+        ret=orderService.getUserOrders(username);
+
+        if(!ret.isOk()) {
+            if (ret.getMessage().equals("server error"))
+                return new ResponseEntity(new ResponseDTO(ret.getMessage()), HttpStatus.INTERNAL_SERVER_ERROR);
+
+            return new ResponseEntity(new ResponseDTO(ret.getMessage()), HttpStatus.CONFLICT);
+        }
+
+        return new ResponseEntity(ret.getData(),HttpStatus.OK);
+    }
+
+    @RequestMapping(
+            value = "",
+            method = RequestMethod.GET
+    )
+    public ResponseEntity getUserOrders(){
+        ServiceReturn ret;
+
+        ret=orderService.getOrders();
+
+        if(!ret.isOk()) {
+            if (ret.getMessage().equals("server error"))
+                return new ResponseEntity(new ResponseDTO(ret.getMessage()), HttpStatus.INTERNAL_SERVER_ERROR);
+
+            return new ResponseEntity(new ResponseDTO(ret.getMessage()), HttpStatus.CONFLICT);
+        }
+
+        return new ResponseEntity(ret.getData(),HttpStatus.OK);
+    }
+
 }

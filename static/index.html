@@ -54,6 +54,12 @@
 
             <!-- salesman options -->
 
+            <li><a 
+                href="#/orders"
+                ng-show="role=='salesman' ">
+                Orders
+            </a></li>
+
         </ul>
         <ul class="nav navbar-nav navbar-right">
             <li ><a href="#/login" ng-show="role=='guest'"><span class="glyphicon glyphicon-log-in"></span> Login</a></li>
@@ -91,6 +97,9 @@
 <script src="app/controllers/saleEventController.js"></script>
 <script src="app/controllers/allArticlesController.js"></script>
 <script src="app/controllers/cartController.js"></script>
+<script src="app/controllers/orderController.js"></script>
+
+<script src="app/orderFilter.js"></script>
 
 
 </body>

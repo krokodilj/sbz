@@ -1,10 +1,12 @@
 (function () {
 	angular.module("buystuff")
-		.controller("profileController",function($routeParams,userService,authService){
-
+		.controller("profileController",function($rootScope,$routeParams,userService,authService,orderService){
+                  
 			var self=this;
 
                         self.user
+
+                        self.orders
 
 			self.getUser=function(){
    				userService.getUser($routeParams.username).then(function(retval){
@@ -16,18 +18,26 @@
                                     alert("ERROR "+retval.msg+" ERROR")
                               }
             		
-            	})
-            }
+            	     })
+                   }
+
+                   self.getUserOrders=function(){
+                        orderService.getUserOrders($routeParams.username).then(function(retval){
+                              if(retval.ok){
+                                    self.orders=retval.data
+                              }else{
+                                    alert("ERROR "+retval.msg+" ERROR")
+                              }
+                        
+                       })
+                   }
 
             self.getUser()
-            //in case of user role load data
+            //in case of customer role load data
             var role=authService.getUserRole()
             if(role=="customer"){
-
-            }else if(role=="salesman"){
-
-            }//else if(role=="manager"){}
-            //netrebanista za menadzera
+                  self.getUserOrders()
+            }
 
 
 		});

@@ -84,7 +84,7 @@ public class OrderService {
     public ServiceReturn addOrder(Receipt order){
         try{
 
-            order.setState("NEW");
+            order.setState("IN PROCESS");
 
             orderRepository.save(order);
 
@@ -99,6 +99,18 @@ public class OrderService {
         try{
             User user=userRepository.findOneByUsername(username);
             List<Receipt> data = orderRepository.findAllByCustomer(user);
+
+            return new ServiceReturn(true,null,data);
+        }catch(Exception e){
+            e.printStackTrace();
+            return new ServiceReturn(false,"server error");
+        }
+    }
+
+    public ServiceReturn getOrders(){
+        try{
+           
+            List<Receipt> data = orderRepository.findAll();
 
             return new ServiceReturn(true,null,data);
         }catch(Exception e){
