@@ -62,7 +62,7 @@
 					class="col-md-3" 
 					ng-repeat="article in ctrl.articles"><center>
 					<small>{{article.id}}</small><br>
-					<img src="{{}}" width="150px" height="150px">
+					<img src="{{article.img_src}}" width="150px" height="150px">
 					<p><strong>{{article.name}}</strong></p>
 					<p>price:<strong>{{article.price}}</strong></p>
 					<input type="number" placeholder="count" min=1 ng-model="ctrl.data[article.id]"></input><br>
@@ -73,7 +73,7 @@
 					</button><br><br>
 
 					<p>{{article.category.name}}
-				</center></div>
+					</center></div>
 			</div>
 		</div>
 		<div class="col-md-2"></div>

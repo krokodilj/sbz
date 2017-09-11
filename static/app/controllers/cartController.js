@@ -31,6 +31,8 @@
 
 				orderService.order(self.order).then(function(retval){
 					if(retval.ok){
+						self.cart=[]
+						alert("order created")
 						$location.path("#/buy")
 					}else{
 						alert("ERROR "+retval.msg+" ERROR")

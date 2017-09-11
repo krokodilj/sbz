@@ -1,0 +1,31 @@
+<div class="container-fluid">
+	<h1><center>Order Articles</center></h1>
+	<h4><center>these articles are low on supplies</center></h4>
+	<div class="row">
+		<div class="col-md-2"></div>
+
+		<div class="col-md-8">
+			<div 
+					style="border-style: ridge;"
+					class="col-md-3" 
+					ng-repeat="article in ctrl.articles"><center>
+					<small>{{article.id}}</small><br>
+					<img src="{{article.img_src}}" width="150px" height="150px">
+					<p><strong>{{article.name}}</strong></p>
+					<p>price:<strong>{{article.price}}</strong></p>
+					<input type="number" placeholder="count" min=1 ng-model="ctrl.data[article.id]"></input><br>
+					<button class="btn btn-success"
+						ng-click="ctrl.orderArticle(article.id,ctrl.data[article.id])"
+						ng-disabled="!ctrl.data[article.id]">
+						order
+					</button><br><br>
+
+					<p>{{article.category.name}}
+			</center></div>
+
+
+		</div>
+
+		<div class="col-md-2"></div>
+	</div>
+</div>

@@ -18,6 +18,7 @@ public class Article {
     private String name;
     @ManyToOne
     private ArticleCategory category;
+    private String img_src;
     private Double price;
     private Integer count;
     private Date created;
@@ -95,5 +96,13 @@ public class Article {
 
     public void setMinimumCount(Integer minimumCount) {
         this.minimumCount = minimumCount;
+    }
+
+    public String getImg_src() {
+        return img_src;
+    }
+
+    public void setImg_src(String img_src) {
+        this.img_src = img_src;
     }
 }

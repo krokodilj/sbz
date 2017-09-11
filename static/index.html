@@ -60,6 +60,18 @@
                 Orders
             </a></li>
 
+            <li><a 
+                href="#/order_supplies"
+                ng-show="role=='salesman' ">
+                Orders
+            </a></li>
+
+            <li><a 
+                href="#/add_article"
+                ng-show="role=='salesman' ">
+                + add article
+            </a></li>
+
         </ul>
         <ul class="nav navbar-nav navbar-right">
             <li ><a href="#/login" ng-show="role=='guest'"><span class="glyphicon glyphicon-log-in"></span> Login</a></li>
@@ -98,6 +110,7 @@
 <script src="app/controllers/allArticlesController.js"></script>
 <script src="app/controllers/cartController.js"></script>
 <script src="app/controllers/orderController.js"></script>
+<script src="app/controllers/orderSuppliesController.js"></script>
 
 <script src="app/orderFilter.js"></script>
 

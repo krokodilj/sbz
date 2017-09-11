@@ -81,5 +81,20 @@ public class ArticleController {
         return new ResponseEntity(HttpStatus.OK);
     }
 
+    @RequestMapping(
+            value = "/low",
+            method = RequestMethod.GET,
+            produces = "application/json"
+    )
+    public ResponseEntity getArticle()
+    {
+        ServiceReturn ret;
+        ret=articleService.getLowArticles();
+        if(!ret.isOk()) {
+            if (ret.getMessage().equals("server error"))
+                return new ResponseEntity(new ResponseDTO(ret.getMessage()), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
 
+        return new ResponseEntity(ret.getData(),HttpStatus.OK);
+    }
 }

@@ -145,6 +145,9 @@ public class OrderService {
                 for(Item i : order.getItems()){
                     Article a=i.getArticle();
                     a.setCount(a.getCount()-i.getAmount());
+
+                    if(a.getCount()<a.getMinimumCount()) a.setStatus(false);
+
                     articleRepository.save(a);
                 }
 

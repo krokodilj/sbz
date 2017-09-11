@@ -90,6 +90,16 @@
                         }
                      }
                   })
+                  .when("/order_supplies",{
+                     templateUrl:"app/views/order_supplies.html",
+                     controller:"orderSuppliesController",
+                     controllerAs:"ctrl",
+                     resolve:{
+                        "permission":function(permissionService){
+                           permissionService.givePermission(["salesman"]);
+                        }
+                     }
+                  })
    					.otherwise({
    						redirectTo:"/"
    					})

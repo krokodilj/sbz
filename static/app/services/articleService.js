@@ -25,6 +25,32 @@
 				return ret
 			}
 
+			self.getLowArticles=function(){
+				var ret=$http.get("api/article/low").then(
+					function(response){
+						return {"ok":true,"data":response.data}
+					},function(error){
+						return {"ok":false,"msg":error.data.message}
+					})
+
+				return ret
+			}
+
+			self.orderArticle=function(articleId,amount){
+
+				var data={
+					"count":amount
+				}
+
+				var ret=$http.put("api/article/"+articleId,data).then(
+					function(response){
+						return {"ok":true,"data":response.data}
+					},function(error){
+						return {"ok":false,"msg":error.data.message}
+					})
+
+				return ret
+			}
 
 		})
 

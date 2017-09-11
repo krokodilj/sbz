@@ -23,6 +23,6 @@ public interface ArticleRepository extends JpaRepository<Article,Long> {
     List<Article> search(@Param("id") Long id, @Param("name") String name,@Param("min") Double min,@Param("max") Double max,@Param("category") Long category);
 
 
-
+    List<Article> findAllByStatus(Boolean status);
 
 }
